@@ -1,0 +1,86 @@
+# rgb(255,255,255)    # white
+# rgb(245,245,245)    # almost white
+# rgb(204,204,204)    # very light gray
+# rgb(136,136,136)    # light gray
+# rgb(105,105,105)    # med gray
+# rgb(85,85,85)       # med dark gray
+# rgb(51,51,51)       # dark gray
+
+# rgb(54,69,79)       # slate gray
+
+diagram:
+  fill: rgb(51,51,51) 
+  columns: 6
+  rows: 6
+  gridLines: true
+  
+title:
+  heightPercentage: 6
+  color: rgb(245,245,245) 
+  logoFill: rgb(245,245,245) 
+  stroke: rgb(85,85,85)
+  author: "sxb1n9"
+  company: "sxb1n9"
+  date: "2022-01-05"
+  version: "1.0"
+  subText: "Shows a simple overview of the Symmetric DS network."
+  text: "Symmetric DS - Setup"
+  type: box
+  fill: rgba(0,0,0,0.3)
+  
+servers: &servers
+  color: rgb(255,255,255) 
+  fill:  rgb(85,85,85)
+  iconFamily: azureEnterprise
+  iconFill: rgb(255,255,255) 
+  iconStroke: none
+  stroke: none
+
+group: &group
+  color: white
+  stroke: rgb(85,85,85)
+  fill: rgba(0,0,0,0.3)
+
+groups:
+  - { <<: *group, name: "DOMAIN 1", textLocation: "topMiddle", members: ["app1","sql1"] }
+  - { <<: *group, name: "DOMAIN 2", textLocation: "topMiddle", members: ["app2","sql2","linksql2"] }
+  - { <<: *group, name: "DOMAIN 3", textLocation: "topMiddle", members: ["app3","sql3","linksql3"] }  
+
+icons:
+  app1:     {<<: *servers, x: 2, y: 5, icon: "applicationserver"}
+  sql1:     {<<: *servers, x: 3, y: 5, icon: "databaseserver"}
+  
+  firewall2: {<<: *servers, x: 1, y: 3, icon: "firewall", iconFill: "" }
+  
+  app2:     {<<: *servers, x: 0, y: 2, icon: "applicationserver"}
+  sql2:     {<<: *servers, x: 2, y: 2, icon: "databaseserver"}
+  linksql2: {<<: *servers, x: 1, y: 1, icon: "databaseserver"}
+  
+  firewall3: {<<: *servers, x: 4, y: 3, icon: "firewall", iconFill: "" }
+    
+  app3:     {<<: *servers, x: 3, y: 2, icon: "applicationserver"}
+  sql3:     {<<: *servers, x: 5, y: 2, icon: "databaseserver"}
+  linksql3: {<<: *servers, x: 4, y: 1, icon: "databaseserver"}
+
+connections:
+  - { endpoints: ["app1", "sql1"], strokeDashArray: "10,2", stroke: "blue" }
+  - { endpoints: ["app1", "firewall2"], strokeDashArray: "10,2", stroke: "blue" }
+  - { endpoints: ["app1", "firewall3"], strokeDashArray: "10,2", stroke: "blue" }
+  - { endpoints: ["app2", "sql2"], strokeDashArray: "10,2", stroke: "blue" }
+  - { endpoints: ["app2", "firewall2"], strokeDashArray: "10,2", stroke: "blue" }
+  - { endpoints: ["app3", "firewall3"], strokeDashArray: "10,2", stroke: "blue" }
+  - { endpoints: ["app3", "sql3"], strokeDashArray: "10,2", stroke: "blue" }
+  
+  - { endpoints: ["app2", "linksql2"], strokeDashArray: "10,2", stroke: "red" }
+  - { endpoints: ["app3", "linksql3"], strokeDashArray: "10,2", stroke: "red" }
+  
+  - { endpoints: ["sql2", "linksql2"], strokeDashArray: "10,2", stroke: "yellow" }
+  - { endpoints: ["sql3", "linksql3"], strokeDashArray: "10,2", stroke: "yellow" }
+
+notes:
+  firewallComment: {
+    x: 0, y: 5, w: 2,
+    xAlign: left, yAlign: center,
+    stroke: "blue",
+    fill: "#000066",
+    text: "app# = symmetric ds server \n\n blue dash = current connections \n\n red dash = read only (no trigggers) \n\n yellow dash = sql query from other database" }
